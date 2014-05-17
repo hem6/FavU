@@ -13,6 +13,10 @@ class UsersManager
     @users = NSUserDefaults[:users]
   end
 
+  def saveUsers
+    NSUserDefaults[:users] = @users
+  end
+
   def userForIndexPath(indexPath)
     @users[indexPath.row]
   end

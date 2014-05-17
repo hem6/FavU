@@ -7,4 +7,8 @@ class AppDelegate
     @window.makeKeyAndVisible
     true
   end
+
+  def applicationWillTerminate(application)
+    UsersManager.sharedmanager.saveUsers
+  end
 end
