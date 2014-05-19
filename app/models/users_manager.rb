@@ -25,7 +25,7 @@ class UsersManager
     @users << user
   end
 
-  def numberOfUser
+  def numberOfUsers
     @users.count
   end
 end

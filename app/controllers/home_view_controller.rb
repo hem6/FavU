@@ -69,7 +69,7 @@ class HomeViewController < UIViewController
   ### UICollectionViewDataSource
 
   def collectionView(collectionView, numberOfItemsInSection:section)
-    @usersManager.numberOfUser
+    @usersManager.numberOfUsers
   end
 
   def collectionView(collectionView, cellForItemAtIndexPath:indexPath)
