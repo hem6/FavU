@@ -3,12 +3,21 @@ class UserCell < UICollectionViewCell
     super
 
     self << @image_view = UIImageView.new
+
     self << @name_label = UILabel.new.tap do |label|
       label.font = UIFont.systemFontOfSize(13)
       label.textColor = UIColor.blackColor
       label.lineBreakMode = NSLineBreakByTruncatingTail
       label.textAlignment = NSTextAlignmentCenter
     end
+
+    self.selectedBackgroundView = UIView.new.tap do |view|
+      view.backgroundColor = UIColor.whiteColor
+    end
+
+    self.backgroundView = UIToolbar.alloc.initWithFrame(self.bounds)
+
+    self
   end
 
   def fillWithUser(user)
