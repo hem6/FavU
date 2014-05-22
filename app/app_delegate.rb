@@ -8,7 +8,7 @@ class AppDelegate
     true
   end
 
-  def applicationWillTerminate(application)
-    UsersManager.sharedmanager.saveUsers
+  def applicationDidEnterBackground(application)
+    UsersManager.sharedManager.saveUsers
   end
 end
