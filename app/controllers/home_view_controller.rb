@@ -93,4 +93,18 @@ class HomeViewController < UIViewController
 
     @tableView.reloadData
   end
+
+  ### LXReorderableCollectionViewDataSource
+
+  def collectionView(collectionView, itemAtIndexPath:fromIndexPath, willMoveToIndexPath:toIndexPath)
+    @usersManager.moveUser(fromIndexPath, toIndexPath)
+  end
+
+  def collectionView(collectionView, canMoveItemAtIndexPath:indexPath)
+    true
+  end
+
+  def collectionView(collectionView, itemAtIndexPath:fromIndexPath, canMoveToIndexPath:toIndexPath)
+    true
+  end
 end

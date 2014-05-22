@@ -28,4 +28,9 @@ class UsersManager
   def numberOfUsers
     @users.count
   end
+
+  def moveUser(fromIndexPath, toIndexPath)
+    temp = @users.delete_at(fromIndexPath.row)
+    @users.insert(toIndexPath.row, temp)
+  end
 end

@@ -13,7 +13,7 @@ class HomeView < UIView
       @refreshControl = UIRefreshControl.new
       @tableView << @refreshControl
 
-      flowLayout = UICollectionViewFlowLayout.new.tap do |layout|
+      flowLayout = LXReorderableCollectionViewFlowLayout.new.tap do |layout|
         layout.itemSize = [80, 80]
         layout.minimumLineSpacing = 0
         layout.minimumInteritemSpacing = 0
