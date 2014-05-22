@@ -15,5 +15,6 @@ Motion::Project::App.setup do |app|
   app.pods do
     pod 'STTwitter', :git => 'https://github.com/nst/STTwitter.git'
     pod 'AFNetworking'
+    pod 'LXReorderableCollectionViewFlowLayout'
   end
 end

@@ -18,10 +18,12 @@ PODS:
   - AFNetworking/UIKit (2.2.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - LXReorderableCollectionViewFlowLayout (0.1.1)
   - STTwitter (0.1.2)
 
 DEPENDENCIES:
   - AFNetworking
+  - LXReorderableCollectionViewFlowLayout
   - STTwitter (from `https://github.com/nst/STTwitter.git`)
 
 EXTERNAL SOURCES:
@@ -29,7 +31,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/nst/STTwitter.git
 
 SPEC CHECKSUMS:
-  AFNetworking: ae513199cca79e9d7af2708ccabe2ed075550c42
+  AFNetworking: 47947303319594706f48a55185ea95a95159ab94
+  LXReorderableCollectionViewFlowLayout: b4e25543263e27d4c147109ae5ead01cc9119f23
   STTwitter: b46bef092a1585abd1bdafc8b2b92048a37a14fc
 
 COCOAPODS: 0.32.1
