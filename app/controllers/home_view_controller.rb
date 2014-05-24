@@ -89,10 +89,15 @@ class HomeViewController < UIViewController
   ### UICollectionViewDataSource
 
   def collectionView(collectionView, numberOfItemsInSection:section)
-    @usersManager.numberOfUsers
+    @usersManager.numberOfUsers + 1
   end
 
   def collectionView(collectionView, cellForItemAtIndexPath:indexPath)
+    if indexPath.row == @usersManager.numberOfUsers
+      cell = collectionView.dequeueReusableCellWithReuseIdentifier("AddUserCell", forIndexPath:indexPath)
+      return cell
+    end
+
     cell = collectionView.dequeueReusableCellWithReuseIdentifier("UserCell", forIndexPath:indexPath)
     cell.fillWithUser(@usersManager.userForIndexPath(indexPath))
     cell
@@ -102,6 +107,11 @@ class HomeViewController < UIViewController
 
   def collectionView(collectionView, didSelectItemAtIndexPath:indexPath)
     collectionView.deselectItemAtIndexPath(indexPath, animated: true)
+
+    if indexPath.row == @usersManager.numberOfUsers
+      add_user_cell_tapped
+      return
+    end
 
     @timeline.removeObserver(self, forKeyPath:"tweets")
 
@@ -114,6 +124,10 @@ class HomeViewController < UIViewController
     @tableView.reloadData
   end
 
+  def add_user_cell_tapped
+    return
+  end
+
   ### LXReorderableCollectionViewDataSource
 
   def collectionView(collectionView, itemAtIndexPath:fromIndexPath, willMoveToIndexPath:toIndexPath)
@@ -121,10 +135,12 @@ class HomeViewController < UIViewController
   end
 
   def collectionView(collectionView, canMoveItemAtIndexPath:indexPath)
+    return falese if indexPath.row == @usersManager.numberOfUsers
     true
   end
 
   def collectionView(collectionView, itemAtIndexPath:fromIndexPath, canMoveToIndexPath:toIndexPath)
+    return falese if indexPath.row == @usersManager.numberOfUsers
     true
   end
 end
