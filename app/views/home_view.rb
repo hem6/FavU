@@ -25,7 +25,7 @@ class HomeView < UIView
         collectionView.registerClass(UserCell, forCellWithReuseIdentifier:"UserCell")
         collectionView.scrollsToTop = false
         collectionView.showsHorizontalScrollIndicator = false
-        collectionView.backgroundView = UIToolbar.alloc.initWithFrame(self.bounds)
+        collectionView.backgroundColor = UIColor.colorWithRed(0.950, green:0.950, blue:0.950, alpha:1.0)
       end
       self << @collectionView
 

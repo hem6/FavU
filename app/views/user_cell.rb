@@ -12,10 +12,10 @@ class UserCell < UICollectionViewCell
     end
 
     self.selectedBackgroundView = UIView.new.tap do |view|
-      view.backgroundColor = UIColor.whiteColor
+      view.backgroundColor = UIColor.lightGrayColor
     end
 
-    self.backgroundView = UIToolbar.alloc.initWithFrame(self.bounds)
+    self.backgroundColor = UIColor.colorWithRed(0.950, green:0.950, blue:0.950, alpha:0.7)
 
     self
   end
