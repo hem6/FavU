@@ -21,6 +21,15 @@ class UsersManager
     @users[indexPath.row]
   end
 
+  def indexPathForUser(user)
+    row = @users.index{|u| u["screen_name"] == user["screen_name"]}
+    [0, row].nsindexpath
+  end
+
+  def deleteUserForIndexPath(indexPath)
+    @users.delete_at(indexPath.row)
+  end
+
   def addUser(user)
     @users << user
   end

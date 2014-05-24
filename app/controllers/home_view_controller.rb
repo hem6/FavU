@@ -26,7 +26,13 @@ class HomeViewController < UIViewController
     @timeline = @timelinesManager.timelineForUser(@user)
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
 
+    ## navigationBarの設定
     self.title = @user["screen_name"]
+
+    @add_button = UIBarButtonItem.alloc.initWithTitle("add", style:UIBarButtonItemStyleBordered, target:self, action:'add_button_tapped')
+    @remove_button = UIBarButtonItem.alloc.initWithTitle("remove", style:UIBarButtonItemStyleBordered, target:self, action:'remove_button_tapped')
+
+    self.navigationItem.rightBarButtonItem = @remove_button
   end
 
   def refresh
@@ -35,6 +41,20 @@ class HomeViewController < UIViewController
 
   def load_more
     @timeline.update(true)
+  end
+
+  def remove_button_tapped
+    user_index_path = @usersManager.indexPathForUser(@user)
+    @usersManager.deleteUserForIndexPath(user_index_path)
+    @collectionView.deleteItemsAtIndexPaths([user_index_path])
+
+    self.navigationItem.rightBarButtonItem = @add_button
+  end
+
+  def add_button_tapped
+    @usersManager.addUser(@user)
+    @collectionView.insertItemsAtIndexPaths([[0, @usersManager.numberOfUsers - 1].nsindexpath])
+    self.navigationItem.rightBarButtonItem = @remove_button
   end
 
   ### UITableViewDataSource
