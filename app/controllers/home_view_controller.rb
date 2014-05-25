@@ -125,7 +125,8 @@ class HomeViewController < UIViewController
   end
 
   def add_user_cell_tapped
-    return
+    controller = AddUserViewController.new
+    self.navigationController.pushViewController(controller, animated:true)
   end
 
   ### LXReorderableCollectionViewDataSource
