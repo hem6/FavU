@@ -1,5 +1,5 @@
 class UsersManager
-  attr_reader :users
+  attr_accessor :users
   def self.sharedManager
     @instance ||= UsersManager.new
   end
@@ -31,7 +31,7 @@ class UsersManager
   end
 
   def addUser(user)
-    @users << user
+    self.users = @users << user
   end
 
   def numberOfUsers

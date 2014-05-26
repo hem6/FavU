@@ -22,6 +22,8 @@ class HomeViewController < UIViewController
     @usersManager = UsersManager.sharedManager
     @timelinesManager = TimelinesManager.sharedManager
 
+    @usersManager.addObserver(self, forKeyPath:"users", options:0, context:nil)
+
     @user = @usersManager.users.first
     @timeline = @timelinesManager.timelineForUser(@user)
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
@@ -53,7 +55,6 @@ class HomeViewController < UIViewController
 
   def add_button_tapped
     @usersManager.addUser(@user)
-    @collectionView.insertItemsAtIndexPaths([[0, @usersManager.numberOfUsers - 1].nsindexpath])
     self.navigationItem.rightBarButtonItem = @remove_button
   end
 
@@ -83,6 +84,10 @@ class HomeViewController < UIViewController
     if object == @timeline && keyPath == 'tweets'
       @refreshControl.endRefreshing
       @tableView.reloadData
+    end
+
+    if object == @usersManager
+      @collectionView.insertItemsAtIndexPaths([[0, @usersManager.numberOfUsers - 1].nsindexpath])
     end
   end
 
