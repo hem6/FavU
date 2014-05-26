@@ -7,13 +7,12 @@ class AddUserViewController < UIViewController
 
     @add_button.addTarget(self, action:'add_user', forControlEvents:UIControlEventTouchUpInside)
 
+    @usersManager = UsersManager.sharedManager
+
     self.view = @add_user_view
-    @client = STTwitterAPI.shared_client
   end
 
   def add_user
-    @client.getUserInformationFor(@text_field.text, successBlock: lambda{|user|
-      UsersManager.sharedManager.addUser(user)
-    }, errorBlock: nil)
+    @usersManager.addUserWithScreenName(@text_field.text)
   end
 end

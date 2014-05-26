@@ -6,6 +6,7 @@ class UsersManager
 
   def initialize
     @users = []
+    @client = STTwitterAPI.shared_client
     loadUsers
   end
 
@@ -41,5 +42,11 @@ class UsersManager
   def moveUser(fromIndexPath, toIndexPath)
     temp = @users.delete_at(fromIndexPath.row)
     @users.insert(toIndexPath.row, temp)
+  end
+
+  def addUserWithScreenName(screenName)
+    @client.getUserInformationFor(screenName, successBlock: lambda{|user|
+      addUser(user)
+    }, errorBlock: nil)
   end
 end
