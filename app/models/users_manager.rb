@@ -24,15 +24,17 @@ class UsersManager
 
   def indexPathForUser(user)
     row = @users.index{|u| u["screen_name"] == user["screen_name"]}
-    [0, row].nsindexpath
+    return [0, row].nsindexpath if row
+    nil
   end
 
   def deleteUserForIndexPath(indexPath)
     @users.delete_at(indexPath.row)
+    self.users = @users # KVOの通知を送るためself.users=を呼ぶ
   end
 
   def addUser(user)
-    self.users = @users << user
+    self.users = @users << user # KVOの通知を送るためself.users=を呼ぶ
   end
 
   def numberOfUsers
