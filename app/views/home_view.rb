@@ -23,6 +23,7 @@ class HomeView < UIView
       @collectionView = UICollectionView.alloc.initWithFrame(CGRectZero, collectionViewLayout: flowLayout).tap do |collectionView|
         collectionView.frame = [[0, self.frame.size.height - 80], [self.frame.size.width, 80]]
         collectionView.registerClass(UserCell, forCellWithReuseIdentifier:"UserCell")
+        collectionView.registerClass(AddUserCell, forCellWithReuseIdentifier:"AddUserCell")
         collectionView.scrollsToTop = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.backgroundColor = UIColor.colorWithRed(0.950, green:0.950, blue:0.950, alpha:1.0)

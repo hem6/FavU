@@ -1,11 +1,12 @@
 class UsersManager
-  attr_reader :users
+  attr_accessor :users
   def self.sharedManager
     @instance ||= UsersManager.new
   end
 
   def initialize
     @users = []
+    @client = STTwitterAPI.shared_client
     loadUsers
   end
 
@@ -31,7 +32,7 @@ class UsersManager
   end
 
   def addUser(user)
-    @users << user
+    self.users = @users << user
   end
 
   def numberOfUsers
@@ -41,5 +42,11 @@ class UsersManager
   def moveUser(fromIndexPath, toIndexPath)
     temp = @users.delete_at(fromIndexPath.row)
     @users.insert(toIndexPath.row, temp)
+  end
+
+  def addUserWithScreenName(screenName)
+    @client.getUserInformationFor(screenName, successBlock: lambda{|user|
+      addUser(user)
+    }, errorBlock: nil)
   end
 end

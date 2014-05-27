@@ -5,6 +5,8 @@ app/pixate_code.rb
 resources/*.nib
 resources/*.momd
 resources/*.storyboardc
+resources/fontawesome-webfont.ttf
+resources/fontawesome.plist
 vendor/Pods
 .DS_Store
 nbproject
