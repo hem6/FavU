@@ -70,13 +70,13 @@ class UserSelectViewController < UIViewController
 
   def collectionView(collectionView, canMoveItemAtIndexPath:indexPath)
     # ユーザー追加セルだけfalse
-    return falese if indexPath.row == @users_manager.numberOfUsers
+    return false if indexPath.row == @users_manager.numberOfUsers
     true
   end
 
   def collectionView(collectionView, itemAtIndexPath:fromIndexPath, canMoveToIndexPath:toIndexPath)
     # ユーザー追加セルだけfalse
-    return falese if indexPath.row == @users_manager.numberOfUsers
+    return false if toIndexPath.row == @users_manager.numberOfUsers
     true
   end
 end
