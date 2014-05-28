@@ -5,7 +5,6 @@ class UserTimelinesController < UIViewController
     configure_timeline_view_controller
     configure_user_select_view_controller
     configure_models
-    @timeline_view_controller.timeline = @timelines_manager.timelineForUser(@user)
   end
 
   def configure_timeline_view_controller
