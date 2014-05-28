@@ -5,13 +5,12 @@ class UsersManager
   end
 
   def initialize
-    @users = []
     @client = STTwitterAPI.shared_client
     loadUsers
   end
 
   def loadUsers
-    @users = NSUserDefaults[:users]
+    @users = NSUserDefaults[:users] || []
   end
 
   def saveUsers
@@ -47,6 +46,16 @@ class UsersManager
   end
 
   def addUserWithScreenName(screenName)
+    unless @client.userName
+      @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
+        addUserWithScreenName(screenName)
+      }, errorBlock: lambda{ |error|
+        puts error
+      })
+
+      return
+    end
+
     @client.getUserInformationFor(screenName, successBlock: lambda{|user|
       addUser(user)
     }, errorBlock: nil)

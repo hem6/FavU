@@ -60,6 +60,11 @@ class UserTimelinesController < UIViewController
   end
 
   def user=(user)
+    unless user
+      self.title = "FavU"
+      return
+    end
+
     @user = user
     @timeline_view_controller.timeline = @timelines_manager.timelineForUser(@user)
     self.title = @user["screen_name"]

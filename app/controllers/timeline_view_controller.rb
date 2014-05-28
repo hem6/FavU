@@ -46,7 +46,8 @@ class TimelineViewController < UIViewController
   end
 
   def tableView(tableView, numberOfRowsInSection:section)
-    return @timeline.count
+    return 0 unless @timeline
+    @timeline.count
   end
 
   ### UITableViewDelegate
