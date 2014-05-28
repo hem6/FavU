@@ -28,6 +28,8 @@ class Timeline
     end
 
     get_user_timeline(append) do |tweets|
+      break unless tweets.instance_of?(Array) # エラーのときerrorBlockが呼ばれずになぜかこちらが呼ばれるので判定
+
       in_reply_to_status_ids = extract_in_reply_to_status_ids(tweets)
 
       get_tweets_with_ids(in_reply_to_status_ids) do |in_reply_to_tweets|
