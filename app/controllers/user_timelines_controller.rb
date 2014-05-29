@@ -72,6 +72,7 @@ class UserTimelinesController < UIViewController
   end
 
   def remove_button_tapped
+    @timelines_manager.deleteTimelineForUser(@user)
     user_index_path = @users_manager.indexPathForUser(@user)
     @users_manager.deleteUserForIndexPath(user_index_path)
     config_right_bar_button_item
