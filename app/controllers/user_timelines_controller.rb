@@ -51,6 +51,7 @@ class UserTimelinesController < UIViewController
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'remove_button_tapped')
+    @remove_button.tintColor = UIColor.redColor
 
     if @users_manager.indexPathForUser(@user)
       self.navigationItem.rightBarButtonItem = @remove_button
