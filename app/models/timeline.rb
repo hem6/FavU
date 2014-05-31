@@ -44,8 +44,6 @@ class Timeline
         end
       end
     end
-
-    self.tweets = @tweets # KVOの通知を送る
   end
 
   private
@@ -67,6 +65,7 @@ class Timeline
       count: 100,
       successBlock: callback,
       errorBlock: lambda { |error|
+        self.tweets = @tweets # KVOの通知を送る
         UIAlertView.alert("Error", error.description)
       }
     )
@@ -107,10 +106,10 @@ class Timeline
   end
 
   def prepend_tweets(tweets)
-    @tweets = tweets + @tweets
+    self.tweets = tweets + @tweets
   end
 
   def append_tweets(tweets)
-    @tweets << tweets
+    self.tweets = @tweets + tweets
   end
 end
