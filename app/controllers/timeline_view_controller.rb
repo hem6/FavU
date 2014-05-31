@@ -27,7 +27,7 @@ class TimelineViewController < UIViewController
   end
 
   def refresh
-    @timeline.update
+    @timeline.update if @timeline
   end
 
   def observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)

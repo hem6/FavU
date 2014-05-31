@@ -50,7 +50,7 @@ class UsersManager
       @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
         addUserWithScreenName(screenName)
       }, errorBlock: lambda{ |error|
-        puts error
+        UIAlertView.alert("Error", error.description)
       })
 
       return
@@ -58,6 +58,8 @@ class UsersManager
 
     @client.getUserInformationFor(screenName, successBlock: lambda{|user|
       addUser(user)
-    }, errorBlock: nil)
+    }, errorBlock:lambda{|error|
+      UIAlertView.alert("Error", error.description)
+    })
   end
 end

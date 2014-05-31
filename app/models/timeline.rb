@@ -21,14 +21,17 @@ class Timeline
       @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
         update(append)
       }, errorBlock: lambda{ |error|
-        puts error
+        UIAlertView.alert("Error", error.description)
       })
 
       return
     end
 
     get_user_timeline(append) do |tweets|
-      break unless tweets.instance_of?(Array) # エラーのときerrorBlockが呼ばれずになぜかこちらが呼ばれるので判定
+      unless tweets.instance_of?(Array) # エラーのときerrorBlockが呼ばれずになぜかこちらが呼ばれるので判定
+        UIAlertView.alert("Error", tweets["error"]) if tweets.instance_of?(Hash)
+        break
+      end
 
       in_reply_to_status_ids = extract_in_reply_to_status_ids(tweets)
 
@@ -41,6 +44,8 @@ class Timeline
         end
       end
     end
+
+    self.tweets = @tweets # KVOの通知を送る
   end
 
   private
@@ -61,7 +66,9 @@ class Timeline
       maxID: append ? oldest_tweet_id : nil,
       count: 100,
       successBlock: callback,
-      errorBlock: lambda { |error| puts error }
+      errorBlock: lambda { |error|
+        UIAlertView.alert("Error", error.description)
+      }
     )
   end
 
@@ -100,10 +107,10 @@ class Timeline
   end
 
   def prepend_tweets(tweets)
-    self.tweets = tweets + @tweets
+    @tweets = tweets + @tweets
   end
 
   def append_tweets(tweets)
-    self.tweets = @tweets + tweets
+    @tweets << tweets
   end
 end
