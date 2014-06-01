@@ -4,6 +4,12 @@ class TimelineViewController < UIViewController
     configure_views
   end
 
+  def dealloc
+    @timeline.removeObserver(self, forKeyPath:"tweets") if @timeline
+
+    super
+  end
+
   def configure_views
     @timeline_view = TimelineView.alloc.initWithFrame(self.view.bounds)
 
