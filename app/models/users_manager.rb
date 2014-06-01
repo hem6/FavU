@@ -62,4 +62,22 @@ class UsersManager
       UIAlertView.alert("Error", error.description)
     })
   end
+
+  def userWithScreenName(screenName, &callback)
+    unless @client.userName
+      @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
+        addUserWithScreenName(screenName)
+      }, errorBlock: lambda{ |error|
+        UIAlertView.alert("Error", error.description)
+      })
+
+      return
+    end
+
+    @client.getUserInformationFor(screenName, successBlock: lambda{|user|
+      callback.call(user)
+    }, errorBlock:lambda{|error|
+      UIAlertView.alert("Error", error.description)
+    })
+  end
 end
