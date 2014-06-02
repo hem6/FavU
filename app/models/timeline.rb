@@ -4,7 +4,7 @@ class Timeline
   def initialize(user)
     @user = user
     @tweets = []
-    @displayOffset = [0, 0]
+    @displayOffset = [0, -64]
     @client = STTwitterAPI.shared_client
     update
   end
