@@ -1,9 +1,10 @@
 class Timeline
-  attr_accessor :user, :tweets
+  attr_accessor :user, :tweets, :displayOffset
 
   def initialize(user)
     @user = user
     @tweets = []
+    @displayOffset = [0, 0]
     @client = STTwitterAPI.shared_client
     update
   end

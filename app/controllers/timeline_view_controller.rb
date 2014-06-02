@@ -24,12 +24,17 @@ class TimelineViewController < UIViewController
   end
 
   def timeline=(timeline)
-    # キー値監視しているtimelineを入れ替える
-    @timeline.removeObserver(self, forKeyPath:"tweets") if @timeline
+    # キー値監視しているtimelineを、displayOffsetを保存して入れ替える
+    if @timeline
+      @timeline.removeObserver(self, forKeyPath:"tweets")
+      @timeline.displayOffset = @table_view.contentOffset
+    end
+    
     @timeline = timeline
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
 
     @table_view.reloadData
+    @table_view.contentOffset = @timeline.displayOffset
   end
 
   def refresh
