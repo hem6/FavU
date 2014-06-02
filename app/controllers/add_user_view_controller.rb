@@ -1,11 +1,14 @@
 class AddUserViewController < UIViewController
   def viewDidLoad
+    super
     @users_manager = UsersManager.sharedManager
     configure_timeline_view_controller
     configure_add_user_view
+    self.title = "Add User"
   end
 
   def viewDidAppear(animated)
+    super
     @text_field.becomeFirstResponder
   end
 
@@ -76,7 +79,7 @@ class AddUserViewController < UIViewController
 
     @users_manager.userWithScreenName(textField.text) do |user|
       @user = user
-      self.title = "Add #{@user ? '@' + @user["screen_name"] : 'User'}"
+      self.title = "Add @#{@user["screen_name"]}"
       @timeline_view_controller.timeline = Timeline.new(user)
       config_right_bar_button_item
     end
