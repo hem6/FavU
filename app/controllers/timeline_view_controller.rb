@@ -29,7 +29,7 @@ class TimelineViewController < UIViewController
       @timeline.removeObserver(self, forKeyPath:"tweets")
       @timeline.displayOffset = @table_view.contentOffset
     end
-    
+
     @timeline = timeline
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
 
@@ -66,5 +66,14 @@ class TimelineViewController < UIViewController
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
     tweet = @timeline.tweetForIndexPath(indexPath)
     TweetCell.heightForTweet(tweet)
+  end
+
+  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
+    tableView.deselectRowAtIndexPath(indexPath, animated:true)
+
+    tweet = @timeline.tweetForIndexPath(indexPath)
+    @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
+
+    self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
   end
 end
