@@ -20,6 +20,8 @@ class TimelineViewController < UIViewController
     @refresh_control = @timeline_view.refreshControl
     @refresh_control.addTarget(self, action:'refresh', forControlEvents:UIControlEventValueChanged)
 
+    @indicator_view = @timeline_view.indicatorView
+
     self.view = @timeline_view
   end
 
@@ -35,6 +37,8 @@ class TimelineViewController < UIViewController
 
     @table_view.reloadData
     @table_view.contentOffset = @timeline.displayOffset
+
+    @indicator_view.startAnimating if @timeline.count == 0
   end
 
   def refresh
@@ -42,9 +46,11 @@ class TimelineViewController < UIViewController
   end
 
   def observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
+    puts "change keyvalue"
     return unless object == @timeline
     @refresh_control.endRefreshing
     @table_view.reloadData
+    @indicator_view.stopAnimating
   end
 
   ### UITableViewDataSource

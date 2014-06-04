@@ -1,5 +1,5 @@
 class TimelineView < UIView
-  attr_accessor :tableView, :refreshControl
+  attr_accessor :tableView, :refreshControl, :indicatorView
 
   def initWithFrame(frame)
     return self unless super
@@ -10,6 +10,11 @@ class TimelineView < UIView
     end
 
     @tableView << @refreshControl = UIRefreshControl.new
+
+    self << @indicatorView = UIActivityIndicatorView.new.tap do |iv|
+      iv.style = UIActivityIndicatorViewStyleGray
+      iv.center = [self.center.x, self.center.y]
+    end
 
     self
   end
