@@ -46,7 +46,6 @@ class TimelineViewController < UIViewController
   end
 
   def observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
-    puts "change keyvalue"
     return unless object == @timeline
     @refresh_control.endRefreshing
     @table_view.reloadData
