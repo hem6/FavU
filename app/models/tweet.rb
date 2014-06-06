@@ -21,11 +21,19 @@ class Tweet
     @created_at = data["created_at"]
   end
 
+  def toggleFavorite
+    if @favorited
+      unfavorite
+    else
+      favorite
+    end
+  end
+
   def favorite
     client = STTwitterAPI.shared_client
     client.postFavoriteState(true,
               forStatusID: @id,
-             successBlock: lambda{ |status| puts status},
+             successBlock: lambda{|status|},
                errorBlock: lambda{ |error|
                  UIAlertView.alert("Error", error.description)
                })
@@ -37,7 +45,7 @@ class Tweet
     client = STTwitterAPI.shared_client
     client.postFavoriteState(false,
               forStatusID: @id,
-             successBlock: lambda{ |status| puts status},
+             successBlock: lambda{|status|},
                errorBlock: lambda{ |error|
                  UIAlertView.alert("Error", error.description)
                })
