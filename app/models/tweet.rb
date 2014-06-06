@@ -1,5 +1,5 @@
 class Tweet
-  attr_reader :id, :reply_to, :text, :user, :favorited, :retweeted_by
+  attr_reader :id, :reply_to, :text, :user, :favorited, :retweeted_by, :created_at
 
   def initialize(data)
     if data["retweeted_status"]
@@ -13,11 +13,12 @@ class Tweet
   end
 
   def fill_with_data(data)
-    @id        = data["id_str"]
-    @reply_to  = data["in_reply_to_status_id_str"]
-    @text      = data["text"]
-    @user      = data["user"]
-    @favorited = data["favorited"]
+    @id         = data["id_str"]
+    @reply_to   = data["in_reply_to_status_id_str"]
+    @text       = data["text"]
+    @user       = data["user"]
+    @favorited  = data["favorited"]
+    @created_at = data["created_at"]
   end
 
   def favorite
