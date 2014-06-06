@@ -38,23 +38,6 @@ class TimelineViewController < UIViewController
     single_tap.requireGestureRecognizerToFail(double_tap)
   end
 
-  def single_tapped(recognizer)
-    point = recognizer.locationOfTouch(0, inView:@table_view)
-    index_path = @table_view.indexPathForRowAtPoint(point)
-    tweet = @timeline.tweetForIndexPath(index_path)
-
-    @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
-    self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
-  end
-
-  def double_tapped(recognizer)
-    point = recognizer.locationOfTouch(0, inView:@table_view)
-    index_path = @table_view.indexPathForRowAtPoint(point)
-    tweet = @timeline.tweetForIndexPath(index_path)
-
-    tweet.toggleFavorite
-  end
-
   def timeline=(timeline)
     # キー値監視しているtimelineを、displayOffsetを保存して入れ替える
     if @timeline
@@ -80,6 +63,25 @@ class TimelineViewController < UIViewController
     @refresh_control.endRefreshing
     @table_view.reloadData
     @indicator_view.stopAnimating
+  end
+
+  # UITapGestureRecognizer Action
+
+  def single_tapped(recognizer)
+    tweet = tapped_tweet(recognizer)
+    @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
+    self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
+  end
+
+  def double_tapped(recognizer)
+    tweet = tapped_tweet(recognizer)
+    tweet.toggleFavorite
+  end
+
+  def tapped_tweet(recognizer)
+    point = recognizer.locationOfTouch(0, inView:@table_view)
+    index_path = @table_view.indexPathForRowAtPoint(point)
+    tweet = @timeline.tweetForIndexPath(index_path)
   end
 
   ### UITableViewDataSource
