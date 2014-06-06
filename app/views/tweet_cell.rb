@@ -3,7 +3,7 @@ class TweetCell < UITableViewCell
     height_for_name_labels = 10 + 16 + 3
     text_label_size = [320 - 65 - 10, 1000]
 
-    text_rect = tweet['text'].boundingRectWithSize(text_label_size,
+    text_rect = tweet.text.boundingRectWithSize(text_label_size,
       options: NSStringDrawingUsesFontLeading|NSStringDrawingUsesLineFragmentOrigin,
       attributes: TweetLabelAttributes.sharedAttributes.attributes[:text_label],
       context: nil
@@ -27,16 +27,16 @@ class TweetCell < UITableViewCell
   def fill_with_tweet(tweet)
     text_attributes = TweetLabelAttributes.sharedAttributes.attributes
 
-    @name_label.attributedText = tweet['user']['name'].unescape_tweet.nsattributedstring(text_attributes[:name_label])
+    @name_label.attributedText = tweet.user['name'].unescape_tweet.nsattributedstring(text_attributes[:name_label])
 
-    @screen_name_label.attributedText = ("@" + tweet['user']['screen_name']).nsattributedstring(text_attributes[:screen_name_label])
+    @screen_name_label.attributedText = ("@" + tweet.user['screen_name']).nsattributedstring(text_attributes[:screen_name_label])
 
-    timestamp = FavU::TextUtil.make_relative_timestamp(tweet['created_at'])
+    timestamp = FavU::TextUtil.make_relative_timestamp(tweet.created_at)
     @time_label.attributedText = timestamp.nsattributedstring(text_attributes[:time_label])
 
-    @text_label.attributedText = tweet['text'].unescape_tweet.nsattributedstring(text_attributes[:text_label])
+    @text_label.attributedText = tweet.text.unescape_tweet.nsattributedstring(text_attributes[:text_label])
 
-    @user_image_view.setImageWithURL(tweet['user']['profile_image_url'].nsurl)
+    @user_image_view.setImageWithURL(tweet.user['profile_image_url'].nsurl)
   end
 
   def layoutSubviews

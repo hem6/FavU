@@ -51,20 +51,16 @@ class Timeline
   private
 
   def get_tweets_with_ids(ids, &callback)
-    @client.getStatusesLookupTweetIDs(ids,
-      includeEntities: 0,
-      trimUser: 0,
-      map: 0,
+    @client.get_tweets_with_ids(ids,
       successBlock: callback,
       errorBlock: lambda { |error| puts error }
     )
   end
 
   def get_user_timeline(append, &callback)
-    @client.getUserTimelineWithScreenName(@user['screen_name'],
+    @client.get_user_timeline(@user['screen_name'],
       sinceID: append ? nil : newest_tweet_id,
       maxID: append ? oldest_tweet_id : nil,
-      count: 100,
       successBlock: callback,
       errorBlock: lambda { |error|
         self.tweets = @tweets # KVOの通知を送る
@@ -74,7 +70,7 @@ class Timeline
   end
 
   def extract_in_reply_to_status_ids(tweets)
-    tweets.map{ |tweet| tweet["in_reply_to_status_id_str"] }.compact
+    tweets.map{ |tweet| tweet.reply_to }.compact
   end
 
   def merge_in_reply_to_tweets(tweets, in_reply_to_tweets)
@@ -82,10 +78,10 @@ class Timeline
     inserted_count = 0
 
     tweets.each_with_index do |from_tweet, index|
-      next unless from_tweet['in_reply_to_status_id_str']
+      next unless from_tweet.reply_to
 
       to_tweet = in_reply_to_tweets.find do |in_reply_to_tweet|
-        from_tweet['in_reply_to_status_id_str'] == in_reply_to_tweet['id_str']
+        from_tweet.reply_to == in_reply_to_tweet.id
       end
 
       if to_tweet
@@ -99,12 +95,12 @@ class Timeline
 
   def newest_tweet_id
     newest_tweet = @tweets.first
-    return newest_tweet ? newest_tweet["id_str"] : nil
+    return newest_tweet ? newest_tweet.id : nil
   end
 
   def oldest_tweet_id
     oldest_tweet = @tweets.last
-    return oldest_tweet ? oldest_tweet["id_str"] : nil
+    return oldest_tweet ? oldest_tweet.id : nil
   end
 
   def prepend_tweets(tweets)
