@@ -7,6 +7,7 @@ class TimelineView < UIView
     self << @tableView = UITableView.new.tap do |table|
       table.frame = CGRectZero
       table.registerClass(TweetCell, forCellReuseIdentifier:"TweetCell")
+      table.allowsSelection = false
     end
 
     @tableView << @refreshControl = UIRefreshControl.new

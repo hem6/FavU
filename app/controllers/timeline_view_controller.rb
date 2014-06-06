@@ -2,6 +2,7 @@ class TimelineViewController < UIViewController
   def viewDidLoad
     super
     configure_views
+    configure_gesture_recognizers
   end
 
   def dealloc
@@ -23,6 +24,35 @@ class TimelineViewController < UIViewController
     @indicator_view = @timeline_view.indicatorView
 
     self.view = @timeline_view
+  end
+
+  def configure_gesture_recognizers
+    single_tap = UITapGestureRecognizer.alloc.initWithTarget(self, action:'single_tapped:')
+    single_tap.numberOfTapsRequired = 1
+    @table_view.addGestureRecognizer(single_tap)
+
+    double_tap = UITapGestureRecognizer.alloc.initWithTarget(self, action:'double_tapped:')
+    double_tap.numberOfTapsRequired = 2
+    @table_view.addGestureRecognizer(double_tap)
+
+    single_tap.requireGestureRecognizerToFail(double_tap)
+  end
+
+  def single_tapped(recognizer)
+    point = recognizer.locationOfTouch(0, inView:@table_view)
+    index_path = @table_view.indexPathForRowAtPoint(point)
+    tweet = @timeline.tweetForIndexPath(index_path)
+
+    @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
+    self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
+  end
+
+  def double_tapped(recognizer)
+    point = recognizer.locationOfTouch(0, inView:@table_view)
+    index_path = @table_view.indexPathForRowAtPoint(point)
+    tweet = @timeline.tweetForIndexPath(index_path)
+
+    tweet.toggleFavorite
   end
 
   def timeline=(timeline)
@@ -71,14 +101,5 @@ class TimelineViewController < UIViewController
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
     tweet = @timeline.tweetForIndexPath(indexPath)
     TweetCell.heightForTweet(tweet)
-  end
-
-  def tableView(tableView, didSelectRowAtIndexPath:indexPath)
-    tableView.deselectRowAtIndexPath(indexPath, animated:true)
-
-    tweet = @timeline.tweetForIndexPath(indexPath)
-    @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
-
-    self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
   end
 end
