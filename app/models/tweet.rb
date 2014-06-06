@@ -15,7 +15,7 @@ class Tweet
   def fill_with_data(data)
     @id         = data["id_str"]
     @reply_to   = data["in_reply_to_status_id_str"]
-    @text       = data["text"]
+    @text       = data["text"].unescape_tweet
     @user       = data["user"]
     @favorited  = data["favorited"]
     @created_at = data["created_at"]
