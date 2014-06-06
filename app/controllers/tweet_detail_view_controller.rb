@@ -17,7 +17,7 @@ class TweetDetailViewController < UIViewController
     @indicator_view = @tweet_detail_view.indicatorView
     @indicator_view.startAnimating
 
-    url = "https://twitter.com/#{@tweet["user"]["screen_name"]}/status/#{@tweet["id_str"]}".nsurl
+    url = "https://twitter.com/#{@tweet.user["screen_name"]}/status/#{@tweet.id}".nsurl
     request = NSURLRequest.requestWithURL(url)
 
     @web_view.loadRequest(request)
