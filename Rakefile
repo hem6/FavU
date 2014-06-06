@@ -4,8 +4,6 @@ require 'motion/project/template/ios'
 
 begin
   require 'bundler'
-  require 'guard/motion'
-  require 'motion-redgreen'
   Bundler.require
 rescue LoadError
 end

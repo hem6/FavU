@@ -6,7 +6,6 @@ gem 'sugarcube', :require => 'sugarcube-all'
 gem 'motion-cocoapods'
 gem 'motion-awesome'
 
-group :development, :test do
-  gem 'motion-redgreen'
-  gem 'guard-motion'
-end
+# test
+gem 'motion-redgreen'
+gem 'guard-motion'
