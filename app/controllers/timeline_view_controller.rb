@@ -74,8 +74,14 @@ class TimelineViewController < UIViewController
   end
 
   def double_tapped(recognizer)
-    tweet = tapped_tweet(recognizer)
-    tweet.toggleFavorite
+    point = recognizer.locationOfTouch(0, inView:@table_view)
+    index_path = @table_view.indexPathForRowAtPoint(point)
+
+    tweet = @timeline.tweetForIndexPath(index_path)
+    favorited = tweet.toggleFavorite
+
+    cell = @table_view.cellForRowAtIndexPath(index_path)
+    cell.configure_star(favorited)
   end
 
   def tapped_tweet(recognizer)

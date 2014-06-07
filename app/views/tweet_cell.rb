@@ -23,6 +23,7 @@ class TweetCell < UITableViewCell
     self.contentView << @time_label = UILabel.new
     self.contentView << @text_label = UILabel.new.tap{ |label| label.numberOfLines = 0 }
     self.contentView << @rt_label = UILabel.new
+    self.contentView << @fav_star_label = UILabel.new
 
     self
   end
@@ -47,6 +48,17 @@ class TweetCell < UITableViewCell
       @rt_label.attributedText = rt_icon +" "+ rt_by
     else
       @rt_label.attributedText = nil
+    end
+
+    configure_star(tweet.favorited)
+  end
+
+  def configure_star(favorited)
+    if favorited
+      yellow = UIColor.colorWithRed(1.0, green:0.8, blue:0.0, alpha:1.0)
+      @fav_star_label.attributedText = :star.awesome_icon(:size => 16, :color => yellow)
+    else
+      @fav_star_label.attributedText = nil
     end
   end
 
@@ -89,5 +101,8 @@ class TweetCell < UITableViewCell
     else
       @rt_label.frame = CGRectZero
     end
+
+    #星のレイアウト
+    @fav_star_label.frame = [[self.frame.size.width - 23, 10], [16, 16]]
   end
 end
