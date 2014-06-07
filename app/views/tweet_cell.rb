@@ -56,7 +56,10 @@ class TweetCell < UITableViewCell
   def configure_star(favorited)
     if favorited
       yellow = UIColor.colorWithRed(1.0, green:0.8, blue:0.0, alpha:1.0)
-      @fav_star_label.attributedText = :star.awesome_icon(:size => 16, :color => yellow)
+      star = :star.awesome_icon(:size => 16, :color => yellow).mutableCopy
+      star.addAttribute(NSBackgroundColorAttributeName, value:UIColor.whiteColor, range:0..0)
+
+      @fav_star_label.attributedText = star
     else
       @fav_star_label.attributedText = nil
     end
