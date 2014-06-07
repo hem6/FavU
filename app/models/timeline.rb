@@ -7,11 +7,15 @@ class Timeline
     @displayOffset = [0, -64]
     @client = STTwitterAPI.shared_client
     @updating = false
-    update
+    @prepended = false
   end
 
   def updating?
     @updating
+  end
+
+  def prepended?
+    @prepended
   end
 
   def count
@@ -27,7 +31,7 @@ class Timeline
       @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
         update(append)
       }, errorBlock: lambda{ |error|
-        UIAlertView.alert("Error", error.description)
+        UIAlertView.alert("Error", error.localizedDescription)
       })
 
       return
@@ -47,6 +51,7 @@ class Timeline
 
       get_tweets_with_ids(in_reply_to_status_ids) do |in_reply_to_tweets|
         merged_tweets = merge_in_reply_to_tweets(tweets, in_reply_to_tweets)
+        @prepended = !append
         if append
           append_tweets(merged_tweets)
         else
@@ -61,6 +66,7 @@ class Timeline
   private
 
   def get_tweets_with_ids(ids, &callback)
+    ids_str = ids.map{|id| id.to_s }
     @client.get_tweets_with_ids(ids,
       successBlock: callback,
       errorBlock: lambda { |error| puts error }
@@ -69,12 +75,13 @@ class Timeline
 
   def get_user_timeline(append, &callback)
     @client.get_user_timeline(@user['screen_name'],
-      sinceID: append ? nil : newest_tweet_id,
-      maxID: append ? oldest_tweet_id : nil,
+      sinceID: !append && newest_tweet_id ? newest_tweet_id.to_s : nil,
+      maxID: append ? (oldest_tweet_id - 1).to_s : nil,
       successBlock: callback,
       errorBlock: lambda { |error|
         self.tweets = @tweets # KVOの通知を送る
-        UIAlertView.alert("Error", error.description)
+        UIAlertView.alert("Error", error.localizedDescription)
+        @updating = false
       }
     )
   end

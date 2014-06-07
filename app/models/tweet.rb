@@ -13,8 +13,8 @@ class Tweet
   end
 
   def fill_with_data(data)
-    @id         = data["id_str"]
-    @reply_to   = data["in_reply_to_status_id_str"]
+    @id         = data["id"]
+    @reply_to   = data["in_reply_to_status_id"]
     @text       = data["text"].unescape_tweet
     @user       = data["user"]
     @favorited  = data["favorited"]
@@ -32,7 +32,7 @@ class Tweet
   def favorite
     client = STTwitterAPI.shared_client
     client.postFavoriteState(true,
-              forStatusID: @id,
+              forStatusID: @id.to_s,
              successBlock: lambda{|status|},
                errorBlock: lambda{ |error|
                  UIAlertView.alert("Error", error.description)
@@ -44,7 +44,7 @@ class Tweet
   def unfavorite
     client = STTwitterAPI.shared_client
     client.postFavoriteState(false,
-              forStatusID: @id,
+              forStatusID: @id.to_s,
              successBlock: lambda{|status|},
                errorBlock: lambda{ |error|
                  UIAlertView.alert("Error", error.description)

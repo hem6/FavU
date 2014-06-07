@@ -1,8 +1,8 @@
 describe Tweet do
   before do
     @data = {
-      "id_str" => "111111111111111111",
-      "in_reply_to_status_id_str" => "111111111111111110",
+      "id" => 111111111111111111,
+      "in_reply_to_status_id" => 111111111111111110,
       "text" => "@hem6 hello!",
       "user" => {"screen_name" => "hem6bot"},
       "favorited" => false
@@ -13,11 +13,11 @@ describe Tweet do
   describe "#initialize" do
     context "with simple tweet" do
       it "has right id" do
-        @tweet.id.should.equal @data["id_str"]
+        @tweet.id.should.equal @data["id"]
       end
 
       it "has right reply_to" do
-        @tweet.reply_to.should.equal @data["in_reply_to_status_id_str"]
+        @tweet.reply_to.should.equal @data["in_reply_to_status_id"]
       end
 
       it "has right text" do
@@ -40,16 +40,16 @@ describe Tweet do
     context "with retweet" do
       before do
         @retweeted = {
-          "id_str" => "111111111111111111",
-          "in_reply_to_status_id_str" => "111111111111111110",
+          "id" => 111111111111111111,
+          "in_reply_to_status_id" => 111111111111111110,
           "text" => "@hem6 hello!",
           "user" => {"screen_name" => "hem6bot"},
           "favorited" => false
         }
 
         @data = {
-          "id_str" => "111111111111111113",
-          "in_reply_to_status_id_str" => nil,
+          "id" => 111111111111111113,
+          "in_reply_to_status_id" => nil,
           "text" => "RT @hem6 hello!",
           "user" => {"screen_name" => "hem6"},
           "favorited" => false,
@@ -60,11 +60,11 @@ describe Tweet do
       end
 
       it "has right id" do
-        @tweet.id.should.equal @retweeted["id_str"]
+        @tweet.id.should.equal @retweeted["id"]
       end
 
       it "has right reply_to" do
-        @tweet.reply_to.should.equal @retweeted["in_reply_to_status_id_str"]
+        @tweet.reply_to.should.equal @retweeted["in_reply_to_status_id"]
       end
 
       it "has right text" do
