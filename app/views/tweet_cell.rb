@@ -9,7 +9,9 @@ class TweetCell < UITableViewCell
       context: nil
     )
 
-    return [text_rect.size.height + height_for_name_labels + 10, 68].max
+    height_for_rt_label = tweet.retweeted_by ? 18 : 0
+
+    return [text_rect.size.height + height_for_name_labels + height_for_rt_label + 10, 68].max
   end
 
   def initWithStyle(style, reuseIdentifier:reuseIdentifier)
@@ -20,6 +22,7 @@ class TweetCell < UITableViewCell
     self.contentView << @screen_name_label = UILabel.new
     self.contentView << @time_label = UILabel.new
     self.contentView << @text_label = UILabel.new.tap{ |label| label.numberOfLines = 0 }
+    self.contentView << @rt_label = UILabel.new
 
     self
   end
@@ -34,9 +37,17 @@ class TweetCell < UITableViewCell
     timestamp = FavU::TextUtil.make_relative_timestamp(tweet.created_at)
     @time_label.attributedText = timestamp.nsattributedstring(text_attributes[:time_label])
 
-    @text_label.attributedText = tweet.text.unescape_tweet.nsattributedstring(text_attributes[:text_label])
+    @text_label.attributedText = tweet.text.nsattributedstring(text_attributes[:text_label])
 
     @user_image_view.setImageWithURL(tweet.user['profile_image_url'].nsurl)
+
+    if tweet.retweeted_by
+      rt_icon = :retweet.awesome_icon(:size => 13, :color => UIColor.lightGrayColor)
+      rt_by = tweet.retweeted_by["screen_name"].nsattributedstring(text_attributes[:rt_label])
+      @rt_label.attributedText = rt_icon +" "+ rt_by
+    else
+      @rt_label.attributedText = nil
+    end
   end
 
   def layoutSubviews
@@ -68,5 +79,15 @@ class TweetCell < UITableViewCell
     # テキストのレイアウト
     @text_label.frame = [[65, 10 + 16 + 3], [self.frame.size.width - 65 - 10, self.frame.size.height - (10 + 16 + 3)]]
     @text_label.sizeToFit
+
+    # retweeted by 表示のレイアウト
+    if @rt_label.attributedText
+      origin = @text_label.frame.origin
+      origin.y += @text_label.frame.size.height
+
+      @rt_label.frame = [origin, [self.frame.size.width - 65 - 10, 17]]
+    else
+      @rt_label.frame = CGRectZero
+    end
   end
 end
