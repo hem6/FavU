@@ -32,6 +32,11 @@ class TweetLabelAttributes
         NSForegroundColorAttributeName => UIColor.blackColor,
         NSFontAttributeName => UIFont.systemFontOfSize(15),
         NSParagraphStyleAttributeName => word_wrap_paragraph_style
+      },
+      :rt_label => {
+        NSForegroundColorAttributeName => UIColor.lightGrayColor,
+        NSFontAttributeName => UIFont.systemFontOfSize(13),
+        NSParagraphStyleAttributeName => truncate_paragraph_style
       }
     }
   end
