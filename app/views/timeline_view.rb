@@ -12,9 +12,15 @@ class TimelineView < UIView
 
     @tableView << @refreshControl = UIRefreshControl.new
 
-    self << @indicatorView = UIActivityIndicatorView.new.tap do |iv|
-      iv.style = UIActivityIndicatorViewStyleGray
-      iv.center = [self.center.x, self.center.y]
+    @tableView.tableFooterView = UIView.new.tap do |fv|
+      fv.frame = [[0, 0], [self.frame.size.width, 44]]
+
+      @indicatorView = UIActivityIndicatorView.new.tap do |iv|
+        iv.style = UIActivityIndicatorViewStyleGray
+        iv.center = [fv.center.x, fv.center.y]
+      end
+
+      fv << @indicatorView
     end
 
     self

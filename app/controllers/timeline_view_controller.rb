@@ -50,8 +50,8 @@ class TimelineViewController < UIViewController
 
     @table_view.reloadData
     @table_view.contentOffset = @timeline.displayOffset
-
-    @indicator_view.startAnimating if @timeline.count == 0
+    
+    @indicator_view.startAnimating
   end
 
   def refresh
@@ -62,7 +62,6 @@ class TimelineViewController < UIViewController
     return unless object == @timeline
     @refresh_control.endRefreshing
     @table_view.reloadData
-    @indicator_view.stopAnimating
   end
 
   # UITapGestureRecognizer Action
@@ -109,5 +108,11 @@ class TimelineViewController < UIViewController
   def tableView(tableView, heightForRowAtIndexPath:indexPath)
     tweet = @timeline.tweetForIndexPath(indexPath)
     TweetCell.heightForTweet(tweet)
+  end
+
+  def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
+    if (not @timeline.updating? and @timeline.count > 10 and indexPath.row >= @timeline.count - 5)
+      @timeline.update(true)
+    end
   end
 end

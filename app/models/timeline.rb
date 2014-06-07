@@ -6,7 +6,12 @@ class Timeline
     @tweets = []
     @displayOffset = [0, -64]
     @client = STTwitterAPI.shared_client
+    @updating = false
     update
+  end
+
+  def updating?
+    @updating
   end
 
   def count
@@ -28,10 +33,13 @@ class Timeline
       return
     end
 
+    @updating = true
+
     get_user_timeline(append) do |tweets|
       unless tweets.instance_of?(Array) # エラーのときerrorBlockが呼ばれずになぜかこちらが呼ばれるので判定
         self.tweets = @tweets # KVOの通知を送る
         UIAlertView.alert("Error", tweets["error"]) if tweets.instance_of?(Hash)
+        @updating = false
         break
       end
 
@@ -45,6 +53,8 @@ class Timeline
           prepend_tweets(merged_tweets)
         end
       end
+
+      @updating = false
     end
   end
 
