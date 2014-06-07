@@ -50,7 +50,7 @@ class TimelineViewController < UIViewController
 
     @table_view.reloadData
     @table_view.contentOffset = @timeline.displayOffset
-    
+
     @indicator_view.startAnimating
   end
 
@@ -67,26 +67,36 @@ class TimelineViewController < UIViewController
   # UITapGestureRecognizer Action
 
   def single_tapped(recognizer)
-    tweet = tapped_tweet(recognizer)
+    index_path = indexpath_for_tapped_row(recognizer)
+    return unless index_path
+
+    open_tweet_for_indexpath(index_path)
+  end
+
+  def double_tapped(recognizer)
+    index_path = indexpath_for_tapped_row(recognizer)
+    return unless index_path
+
+    favorite_tweet_for_indexpath(index_path)
+  end
+
+  def indexpath_for_tapped_row(recognizer)
+    point = recognizer.locationOfTouch(0, inView:@table_view)
+    return @table_view.indexPathForRowAtPoint(point)
+  end
+
+  def open_tweet_for_indexpath(index_path)
+    tweet = @timeline.tweetForIndexPath(index_path)
     @tweet_detail_view_controller = TweetDetailViewController.new(tweet)
     self.navigationController.pushViewController(@tweet_detail_view_controller, animated:true)
   end
 
-  def double_tapped(recognizer)
-    point = recognizer.locationOfTouch(0, inView:@table_view)
-    index_path = @table_view.indexPathForRowAtPoint(point)
-
+  def favorite_tweet_for_indexpath(index_path)
     tweet = @timeline.tweetForIndexPath(index_path)
     favorited = tweet.toggleFavorite
 
     cell = @table_view.cellForRowAtIndexPath(index_path)
     cell.configure_star(favorited)
-  end
-
-  def tapped_tweet(recognizer)
-    point = recognizer.locationOfTouch(0, inView:@table_view)
-    index_path = @table_view.indexPathForRowAtPoint(point)
-    tweet = @timeline.tweetForIndexPath(index_path)
   end
 
   ### UITableViewDataSource
