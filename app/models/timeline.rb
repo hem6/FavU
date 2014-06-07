@@ -40,13 +40,6 @@ class Timeline
     @updating = true
 
     get_user_timeline(append) do |tweets|
-      unless tweets.instance_of?(Array) # エラーのときerrorBlockが呼ばれずになぜかこちらが呼ばれるので判定
-        self.tweets = @tweets # KVOの通知を送る
-        UIAlertView.alert("Error", tweets["error"]) if tweets.instance_of?(Hash)
-        @updating = false
-        break
-      end
-
       in_reply_to_status_ids = extract_in_reply_to_status_ids(tweets)
 
       get_tweets_with_ids(in_reply_to_status_ids) do |in_reply_to_tweets|
