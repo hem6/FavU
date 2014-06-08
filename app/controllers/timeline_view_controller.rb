@@ -1,6 +1,7 @@
 class TimelineViewController < UIViewController
   def viewDidLoad
     super
+    @last_timeline_count = 0
     configure_views
     configure_gesture_recognizers
   end
@@ -50,18 +51,55 @@ class TimelineViewController < UIViewController
 
     @table_view.reloadData
     @table_view.contentOffset = @timeline.displayOffset
+    @last_timeline_count = @timeline.count
 
-    @indicator_view.startAnimating
+    if @timeline.count == 0
+      refresh
+      @indicator_view.startAnimating
+    end
   end
 
   def refresh
-    @timeline.update if @timeline
+    if @timeline.nil? || @timeline.updating?
+      @refresh_control.endRefreshing
+      return
+    end
+    @timeline.update
   end
 
   def observeValueForKeyPath(keyPath, ofObject: object, change: change, context: context)
     return unless object == @timeline
+
+    if @timeline.prepended? and
+       @last_timeline_count != 0 and
+       @last_timeline_count != @timeline.count
+
+      prepended_count = @timeline.count - @last_timeline_count
+      tableView(@table_view, reloadDataWithKeepingContentOffset:prepended_count)
+      @last_timeline_count = @timeline.count
+    else
+      @last_timeline_count = @timeline.count
+      @table_view.reloadData
+    end
+
     @refresh_control.endRefreshing
-    @table_view.reloadData
+    @indicator_view.stopAnimating
+  end
+
+  def tableView(tableView, reloadDataWithKeepingContentOffset:prepended_count)
+    offset = tableView.contentOffset
+    tableView.reloadData
+
+    prepended_count.times do |i|
+      index_path = NSIndexPath.indexPathForRow(i, inSection:0)
+      offset.y += self.tableView(tableView, heightForRowAtIndexPath:index_path)
+    end
+
+    if offset.y > tableView.contentSize.height
+      offset.y = 0
+    end
+    puts offset.y
+    tableView.setContentOffset(offset)
   end
 
   # UITapGestureRecognizer Action
@@ -123,6 +161,7 @@ class TimelineViewController < UIViewController
   def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
     if (not @timeline.updating? and @timeline.count > 10 and indexPath.row >= @timeline.count - 5)
       @timeline.update(true)
+      @indicator_view.startAnimating
     end
   end
 end
