@@ -4,6 +4,7 @@ class STTwitterAPI
   end
 
   def get_tweets_with_ids(ids, successBlock: successBlock, errorBlock: errorBlock)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
     getStatusesLookupTweetIDs(ids,
       includeEntities: 0,
       trimUser: 0,
@@ -14,14 +15,21 @@ class STTwitterAPI
           errorBlock.call(error)
           break
         end
+
         tweets = tweets_raw.map{|tweet| Tweet.new(tweet)}
         successBlock.call(tweets)
+
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
-      errorBlock: errorBlock
+      errorBlock: lambda{|error|
+        errorBlock.call(error)
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      }
     )
   end
 
   def get_user_timeline(screenName, sinceID: sinceID, maxID: maxID, successBlock: successBlock, errorBlock: errorBlock)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
     getUserTimelineWithScreenName(screenName,
       sinceID: sinceID,
       maxID: maxID,
@@ -32,14 +40,21 @@ class STTwitterAPI
           errorBlock.call(error)
           break
         end
+
         tweets = tweets_raw.map{|tweet| Tweet.new(tweet)}
         successBlock.call(tweets)
+
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
-      errorBlock: errorBlock
+      errorBlock: lambda{|error|
+        errorBlock.call(error)
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      }
     )
   end
 
   def get_user_information_for(screenName, successBlock: successBlock, errorBlock: errorBlock)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
     getUserInformationFor(screenName,
       successBlock: lambda{|data|
         if data["error"]
@@ -47,14 +62,20 @@ class STTwitterAPI
           errorBlock.call(error)
           break
         end
+
         successBlock.call(data)
+
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
-      errorBlock:errorBlock
+      errorBlock:lambda{|error|
+        errorBlock.call(error)
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+      }
     )
   end
 
   def error_with_hash(data)
-    domain = "com.twitter.hem6"
+    domain = "com.twitter.uemue"
     code = 1
     user_info = {
       NSLocalizedDescriptionKey => data["error"]

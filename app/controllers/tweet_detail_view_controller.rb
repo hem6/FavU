@@ -24,7 +24,12 @@ class TweetDetailViewController < UIViewController
     self.view = @tweet_detail_view
   end
 
+  def webViewDidStartLoad(webView)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+  end
+
   def webViewDidFinishLoad(webView)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = false
     @indicator_view.stopAnimating
   end
 end
