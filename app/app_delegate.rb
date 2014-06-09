@@ -14,6 +14,8 @@ class AppDelegate
   end
 
   def applicationDidEnterBackground(application)
-    UsersManager.sharedManager.saveUsers
+    manager = UsersManager.sharedManager
+    manager.updateUsers
+    manager.saveUsers
   end
 end

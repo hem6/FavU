@@ -10,11 +10,22 @@ class UsersManager
   end
 
   def loadUsers
-    @users = NSUserDefaults[:users] || []
+    users = NSUserDefaults[:users] || []
+    @users = users.map{|u| User.new(u) }
   end
 
   def saveUsers
-    NSUserDefaults[:users] = @users
+    NSUserDefaults[:users] = @users.map{|u| u.to_hash }
+  end
+
+  # UsersCacheにはタイムラインを読み込む際に現れたユーザー情報が保存されている。
+  # @usersにはNSUserDefaultsからロードされた古い情報が入っているので、
+  # UsersCacheに同一のユーザーが含まれていればそれと置き換える。
+  def updateUsers
+    cache = UsersCache.sharedCache
+    @users.map do |u|
+      cache.userForId(u.id) || u
+    end
   end
 
   def userForIndexPath(indexPath)
@@ -22,7 +33,7 @@ class UsersManager
   end
 
   def indexPathForUser(user)
-    row = @users.index{|u| u["screen_name"] == user["screen_name"]}
+    row = @users.index{|u| u.screen_name == user.screen_name}
     return [0, row].nsindexpath if row
     nil
   end
@@ -43,41 +54,5 @@ class UsersManager
   def moveUser(fromIndexPath, toIndexPath)
     temp = @users.delete_at(fromIndexPath.row)
     @users.insert(toIndexPath.row, temp)
-  end
-
-  def addUserWithScreenName(screenName)
-    unless @client.userName
-      @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
-        addUserWithScreenName(screenName)
-      }, errorBlock: lambda{ |error|
-        UIAlertView.alert("Error", error.description)
-      })
-
-      return
-    end
-
-    @client.getUserInformationFor(screenName, successBlock: lambda{|user|
-      addUser(user)
-    }, errorBlock:lambda{|error|
-      UIAlertView.alert("Error", error.description)
-    })
-  end
-
-  def userWithScreenName(screenName, &callback)
-    unless @client.userName
-      @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
-        addUserWithScreenName(screenName)
-      }, errorBlock: lambda{ |error|
-        UIAlertView.alert("Error", error.description)
-      })
-
-      return
-    end
-
-    @client.getUserInformationFor(screenName, successBlock: lambda{|user|
-      callback.call(user)
-    }, errorBlock:lambda{|error|
-      UIAlertView.alert("Error", error.description)
-    })
   end
 end

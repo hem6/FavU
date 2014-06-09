@@ -8,10 +8,10 @@ class TimelinesManager
   end
 
   def timelineForUser(user)
-    @timelines[user["screen_name"]] ||= Timeline.new(user)
+    @timelines[user.screen_name] ||= Timeline.new(user)
   end
 
   def deleteTimelineForUser(user)
-    @timelines.delete(user["screen_name"])
+    @timelines.delete(user.screen_name)
   end
 end

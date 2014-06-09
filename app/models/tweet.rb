@@ -4,9 +4,10 @@ class Tweet
   def initialize(data)
     if data["retweeted_status"]
       fill_with_data(data["retweeted_status"])
-      @retweeted_by = data["user"]
+      @retweeted_by = User.new(data["user"])
     else
       fill_with_data(data)
+      UsersCache.sharedCache.cacheUser(@user)
     end
 
     self
@@ -16,7 +17,7 @@ class Tweet
     @id         = data["id"]
     @reply_to   = data["in_reply_to_status_id"]
     @text       = data["text"].unescape_tweet
-    @user       = data["user"]
+    @user       = User.new(data["user"])
     @favorited  = data["favorited"]
     @created_at = data["created_at"]
   end

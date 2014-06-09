@@ -67,7 +67,7 @@ class Timeline
   end
 
   def get_user_timeline(append, &callback)
-    @client.get_user_timeline(@user['screen_name'],
+    @client.get_user_timeline(@user.screen_name,
       sinceID: !append && newest_tweet_id ? newest_tweet_id.to_s : nil,
       maxID: append ? (oldest_tweet_id - 1).to_s : nil,
       successBlock: callback,

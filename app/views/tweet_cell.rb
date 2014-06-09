@@ -31,20 +31,20 @@ class TweetCell < UITableViewCell
   def fill_with_tweet(tweet)
     text_attributes = TweetLabelAttributes.sharedAttributes.attributes
 
-    @name_label.attributedText = tweet.user['name'].unescape_tweet.nsattributedstring(text_attributes[:name_label])
+    @name_label.attributedText = tweet.user.name.unescape_tweet.nsattributedstring(text_attributes[:name_label])
 
-    @screen_name_label.attributedText = ("@" + tweet.user['screen_name']).nsattributedstring(text_attributes[:screen_name_label])
+    @screen_name_label.attributedText = ("@" + tweet.user.screen_name).nsattributedstring(text_attributes[:screen_name_label])
 
     timestamp = FavU::TextUtil.make_relative_timestamp(tweet.created_at)
     @time_label.attributedText = timestamp.nsattributedstring(text_attributes[:time_label])
 
     @text_label.attributedText = tweet.text.nsattributedstring(text_attributes[:text_label])
 
-    @user_image_view.setImageWithURL(tweet.user['profile_image_url'].nsurl)
+    @user_image_view.setImageWithURL(tweet.user.profile_image_url.nsurl)
 
     if tweet.retweeted_by
       rt_icon = :retweet.awesome_icon(:size => 13, :color => UIColor.lightGrayColor)
-      rt_by = tweet.retweeted_by["screen_name"].nsattributedstring(text_attributes[:rt_label])
+      rt_by = tweet.retweeted_by.screen_name.nsattributedstring(text_attributes[:rt_label])
       @rt_label.attributedText = rt_icon +" "+ rt_by
     else
       @rt_label.attributedText = nil
