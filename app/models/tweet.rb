@@ -7,6 +7,7 @@ class Tweet
       @retweeted_by = User.new(data["user"])
     else
       fill_with_data(data)
+      UsersCache.sharedCache.cacheUser(@user)
     end
 
     self

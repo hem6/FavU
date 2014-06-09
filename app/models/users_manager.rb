@@ -18,6 +18,16 @@ class UsersManager
     NSUserDefaults[:users] = @users.map{|u| u.to_hash }
   end
 
+  # UsersCacheにはタイムラインを読み込む際に現れたユーザー情報が保存されている。
+  # @usersにはNSUserDefaultsからロードされた古い情報が入っているので、
+  # UsersCacheに同一のユーザーが含まれていればそれと置き換える。
+  def updateUsers
+    cache = UsersCache.sharedCache
+    @users.map do |u|
+      cache.userForId(u.id) || u
+    end
+  end
+
   def userForIndexPath(indexPath)
     @users[indexPath.row]
   end
