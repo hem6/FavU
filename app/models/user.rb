@@ -7,10 +7,8 @@ class User
   end
 
   def initialize(data)
-    @screen_name       = data["screen_name"]
-    @name              = data["name"]
-    @profile_image_url = data["profile_image_url"]
-    @id                = data["id"]
+    init_with_data(data)
+    return self
   end
 
   def to_hash
@@ -20,6 +18,13 @@ class User
       "profile_image_url" => @profile_image_url,
       "id" => @id
     }
+  end
+
+  def init_with_data(data)
+    @screen_name       = data["screen_name"]
+    @name              = data["name"]
+    @profile_image_url = data["profile_image_url"]
+    @id                = data["id"]
   end
 
   def initWithScreenName(screen_name)
@@ -36,10 +41,7 @@ class User
     end
 
     client.get_user_information_for(@screen_name, successBlock: lambda{|data|
-      @screen_name       = data["screen_name"]
-      @name              = data["name"]
-      @profile_image_url = data["profile_image_url"]
-      @id                = data["id"]
+      init_with_data(data)
     }, errorBlock:lambda{|error|
       UIAlertView.alert("Error", error.localizedDescription)
     })
