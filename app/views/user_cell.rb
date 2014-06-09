@@ -21,8 +21,8 @@ class UserCell < UICollectionViewCell
   end
 
   def fillWithUser(user)
-    @image_view.setImageWithURL(user['profile_image_url'].nsurl)
-    @name_label.text = user['screen_name']
+    @image_view.setImageWithURL(user.profile_image_url.nsurl)
+    @name_label.text = user.screen_name
   end
 
   def layoutSubviews

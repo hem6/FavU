@@ -3,8 +3,8 @@ describe Tweet do
     @data = {
       "id" => 111111111111111111,
       "in_reply_to_status_id" => 111111111111111110,
-      "text" => "@hem6 hello!",
-      "user" => {"screen_name" => "hem6bot"},
+      "text" => "@uemue hello!",
+      "user" => {"screen_name" => "uemue9", "id" => 1234567},
       "favorited" => false
     }
     @tweet = Tweet.new(@data)
@@ -25,7 +25,7 @@ describe Tweet do
       end
 
       it "has right user" do
-        @tweet.user.should.equal @data["user"]
+        @tweet.user.id.should.equal User.new(@data["user"]).id
       end
 
       it "has right favorited status" do
@@ -42,16 +42,16 @@ describe Tweet do
         @retweeted = {
           "id" => 111111111111111111,
           "in_reply_to_status_id" => 111111111111111110,
-          "text" => "@hem6 hello!",
-          "user" => {"screen_name" => "hem6bot"},
+          "text" => "@uemue hello!",
+          "user" => {"screen_name" => "uemue9", "id" => 1234567},
           "favorited" => false
         }
 
         @data = {
           "id" => 111111111111111113,
           "in_reply_to_status_id" => nil,
-          "text" => "RT @hem6 hello!",
-          "user" => {"screen_name" => "hem6"},
+          "text" => "RT @uemue hello!",
+          "user" => {"screen_name" => "uemue", "id" => 1234565},
           "favorited" => false,
           "retweeted_status" => @retweeted
         }
@@ -72,7 +72,7 @@ describe Tweet do
       end
 
       it "has right user" do
-        @tweet.user.should.equal @retweeted["user"]
+        @tweet.user.id.should.equal User.new(@retweeted["user"]).id
       end
 
       it "has right favorited status" do
@@ -80,7 +80,7 @@ describe Tweet do
       end
 
       it "has no retweeted_by user" do
-        @tweet.retweeted_by.should.equal @data["user"]
+        @tweet.retweeted_by.id.should.equal User.new(@data["user"]).id
       end
     end
   end

@@ -39,6 +39,20 @@ class STTwitterAPI
     )
   end
 
+  def get_user_information_for(screenName, successBlock: successBlock, errorBlock: errorBlock)
+    getUserInformationFor(screenName,
+      successBlock: lambda{|data|
+        if data["error"]
+          error = error_with_hash(data)
+          errorBlock.call(error)
+          break
+        end
+        successBlock.call(data)
+      },
+      errorBlock:errorBlock
+    )
+  end
+
   def error_with_hash(data)
     domain = "com.twitter.hem6"
     code = 1

@@ -68,7 +68,7 @@ class UserTimelinesController < UIViewController
 
     @user = user
     @timeline_view_controller.timeline = @timelines_manager.timelineForUser(@user)
-    self.title = @user["screen_name"]
+    self.title = @user.screen_name
     config_right_bar_button_item
   end
 
