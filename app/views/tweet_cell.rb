@@ -40,7 +40,9 @@ class TweetCell < UITableViewCell
 
     @text_label.attributedText = tweet.text.nsattributedstring(text_attributes[:text_label])
 
-    @user_image_view.setImageWithURL(tweet.user.profile_image_url.nsurl)
+    placeholder_image = UIImage.imageNamed("placeholder.png")
+    @user_image_view.setImageWithURL(tweet.user.profile_image_url.nsurl,
+                                     placeholderImage: placeholder_image)
 
     if tweet.retweeted_by
       rt_icon = :retweet.awesome_icon(:size => 13, :color => UIColor.lightGrayColor)

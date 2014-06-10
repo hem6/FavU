@@ -21,7 +21,9 @@ class UserCell < UICollectionViewCell
   end
 
   def fillWithUser(user)
-    @image_view.setImageWithURL(user.profile_image_url.nsurl)
+    placeholder_image = UIImage.imageNamed("placeholder.png")
+    @image_view.setImageWithURL(user.profile_image_url.nsurl,
+                                placeholderImage: placeholder_image)
     @name_label.text = user.screen_name
   end
 
