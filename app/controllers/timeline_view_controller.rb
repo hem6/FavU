@@ -49,6 +49,10 @@ class TimelineViewController < UIViewController
     @timeline = timeline
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
 
+    #慣性スクロールを止める
+    @table_view.setContentOffset(@table_view.contentOffset, animated:false)
+
+    # 入れ替えられたタイムラインを表示
     @table_view.reloadData
     @table_view.contentOffset = @timeline.displayOffset
     @last_timeline_count = @timeline.count
