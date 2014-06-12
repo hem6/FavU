@@ -80,6 +80,19 @@ class STTwitterAPI
     )
   end
 
+  def favu_postFavoriteState(state, forStatusID: id)
+    UIApplication.sharedApplication.networkActivityIndicatorVisible = true
+
+    on_complete = lambda{|status|
+      UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+    }
+
+    postFavoriteState(state,
+              forStatusID: id,
+             successBlock: on_complete,
+               errorBlock: on_complete)
+  end
+
   def error_with_hash(data)
     domain = "com.twitter.uemue"
     code = 1

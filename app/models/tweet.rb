@@ -32,24 +32,16 @@ class Tweet
 
   def favorite
     client = STTwitterAPI.shared_client
-    client.postFavoriteState(true,
-              forStatusID: @id.to_s,
-             successBlock: lambda{|status|},
-               errorBlock: lambda{ |error|
-                 UIAlertView.alert("Error", error.description)
-               })
+    client.favu_postFavoriteState(true,
+              forStatusID: @id.to_s)
 
     @favorited = true
   end
 
   def unfavorite
     client = STTwitterAPI.shared_client
-    client.postFavoriteState(false,
-              forStatusID: @id.to_s,
-             successBlock: lambda{|status|},
-               errorBlock: lambda{ |error|
-                 UIAlertView.alert("Error", error.description)
-               })
+    client.favu_postFavoriteState(false,
+              forStatusID: @id.to_s)
 
     @favorited = false
   end
