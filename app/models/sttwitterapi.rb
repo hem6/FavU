@@ -16,6 +16,8 @@ class STTwitterAPI
       trimUser: 0,
       map: 0,
       successBlock: lambda{|tweets_raw|
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+
         unless tweets_raw.instance_of?(Array) # エラーのときerrorBlockが呼ばれずにこちらが呼ばれるので判定
           error = error_with_hash(tweets_raw)
           errorBlock.call(error)
@@ -25,11 +27,10 @@ class STTwitterAPI
         tweets = tweets_raw.map{|tweet| Tweet.new(tweet)}
         successBlock.call(tweets)
 
-        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
       errorBlock: lambda{|error|
-        errorBlock.call(error)
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+        errorBlock.call(error)
       }
     )
   end
@@ -41,6 +42,8 @@ class STTwitterAPI
       maxID: maxID,
       count: 100,
       successBlock: lambda{|tweets_raw|
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+
         unless tweets_raw.instance_of?(Array) # エラーのときerrorBlockが呼ばれずにこちらが呼ばれるので判定
           error = error_with_hash(tweets_raw)
           errorBlock.call(error)
@@ -49,12 +52,10 @@ class STTwitterAPI
 
         tweets = tweets_raw.map{|tweet| Tweet.new(tweet)}
         successBlock.call(tweets)
-
-        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
       errorBlock: lambda{|error|
-        errorBlock.call(error)
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+        errorBlock.call(error)
       }
     )
   end
@@ -63,6 +64,8 @@ class STTwitterAPI
     UIApplication.sharedApplication.networkActivityIndicatorVisible = true
     getUserInformationFor(screenName,
       successBlock: lambda{|data|
+        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+
         if data["error"]
           error = error_with_hash(data)
           errorBlock.call(error)
@@ -70,12 +73,10 @@ class STTwitterAPI
         end
 
         successBlock.call(data)
-
-        UIApplication.sharedApplication.networkActivityIndicatorVisible = false
       },
       errorBlock:lambda{|error|
-        errorBlock.call(error)
         UIApplication.sharedApplication.networkActivityIndicatorVisible = false
+        errorBlock.call(error)
       }
     )
   end
