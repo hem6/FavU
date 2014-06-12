@@ -5,7 +5,6 @@ class Timeline
     @user = user
     @tweets = []
     @displayOffset = [0, -64]
-    @client = STTwitterAPI.shared_client
     @updating = false
     @prepended = false
   end
@@ -27,8 +26,10 @@ class Timeline
   end
 
   def update(append=false)
-    unless @client.userName
-      @client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
+    client = STTwitterAPI.shared_client
+
+    unless client.userName
+      client.verifyCredentialsWithSuccessBlock(lambda{ |user_name|
         update(append)
       }, errorBlock: lambda{ |error|
         UIAlertView.alert("Error", error.localizedDescription)
@@ -59,15 +60,19 @@ class Timeline
   private
 
   def get_tweets_with_ids(ids, &callback)
+    client = STTwitterAPI.shared_client
+
     ids_str = ids.map{|id| id.to_s }
-    @client.get_tweets_with_ids(ids,
+    client.get_tweets_with_ids(ids,
       successBlock: callback,
       errorBlock: lambda { |error| puts error }
     )
   end
 
   def get_user_timeline(append, &callback)
-    @client.get_user_timeline(@user.screen_name,
+    client = STTwitterAPI.shared_client
+
+    client.get_user_timeline(@user.screen_name,
       sinceID: !append && newest_tweet_id ? newest_tweet_id.to_s : nil,
       maxID: append ? (oldest_tweet_id - 1).to_s : nil,
       successBlock: callback,

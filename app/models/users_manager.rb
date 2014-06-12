@@ -5,7 +5,6 @@ class UsersManager
   end
 
   def initialize
-    @client = STTwitterAPI.shared_client
     loadUsers
   end
 

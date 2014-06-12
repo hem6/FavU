@@ -94,7 +94,8 @@ class UserTimelinesController < UIViewController
   end
 
   def accounts_button_tapped
-
+    controller = AccountsViewController.new
+    self.navigationController.pushViewController(controller, animated:true)
   end
 
   ### @user_select_view delegate
