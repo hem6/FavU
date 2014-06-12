@@ -163,7 +163,10 @@ class TimelineViewController < UIViewController
   end
 
   def tableView(tableView, willDisplayCell:cell, forRowAtIndexPath:indexPath)
-    if (not @timeline.updating? and @timeline.count > 10 and indexPath.row >= @timeline.count - 5)
+    if (not @timeline.updating? and
+        @timeline.count > 100 and
+        indexPath.row >= @timeline.count - 5)
+
       @timeline.update(true)
       @indicator_view.startAnimating
     end
