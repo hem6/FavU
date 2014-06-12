@@ -1,6 +1,12 @@
 class STTwitterAPI
   def self.shared_client
-    @shared_client ||= self.twitterAPIOSWithFirstAccount
+    @accounts_manager ||= AccountsManager.sharedManager
+    @shared_client ||= self.twitterAPIOSWithAccount(@accounts_manager.currentAccount)
+    return @shared_client
+  end
+
+  def self.changeAccount(account)
+    @shared_client = self.twitterAPIOSWithAccount(account)
   end
 
   def get_tweets_with_ids(ids, successBlock: successBlock, errorBlock: errorBlock)
