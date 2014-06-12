@@ -5,6 +5,7 @@ class UserTimelinesController < UIViewController
     configure_timeline_view_controller
     configure_user_select_view_controller
     configure_models
+    configure_left_bar_button_item
   end
 
   def configure_timeline_view_controller
@@ -60,6 +61,14 @@ class UserTimelinesController < UIViewController
     end
   end
 
+  def configure_left_bar_button_item
+    @accounts_button = UIBarButtonItem.alloc.initWithTitle("Accounts",
+                                                           style:UIBarButtonItemStyleBordered,
+                                                           target:self,
+                                                           action:'accounts_button_tapped')
+    self.navigationItem.leftBarButtonItem = @accounts_button
+  end
+
   def user=(user)
     unless user
       self.title = "FavU"
@@ -82,6 +91,10 @@ class UserTimelinesController < UIViewController
   def add_button_tapped
     @users_manager.addUser(@user)
     config_right_bar_button_item
+  end
+
+  def accounts_button_tapped
+
   end
 
   ### @user_select_view delegate
