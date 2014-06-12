@@ -2,6 +2,13 @@ class AccountsViewController < UITableViewController
   def viewDidLoad
     @accounts_manager = AccountsManager.sharedManager
     self.tableView.registerClass(UITableViewCell, forCellReuseIdentifier:"Cell")
+
+    unless @accounts_manager.currentAccount
+      STTwitterAPI.shared_client.verifyCredentialsWithSuccessBlock(lambda{|user_name|
+        @accounts_manager.init_accounts
+        self.tableView.reloadData
+      }, errorBlock: lambda{|error|})
+    end
   end
 
   ### UITableViewDataSource

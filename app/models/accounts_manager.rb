@@ -6,6 +6,10 @@ class AccountsManager
   end
 
   def initialize
+    init_accounts
+  end
+
+  def init_accounts
     @account_store = ACAccountStore.new
     type = @account_store.accountTypeWithAccountTypeIdentifier(ACAccountTypeIdentifierTwitter)
     @accounts = @account_store.accountsWithAccountType(type)
