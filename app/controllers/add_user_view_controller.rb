@@ -77,10 +77,12 @@ class AddUserViewController < UIViewController
 
     return false if textField.text.length == 0
 
-    @user = User.userWithScreenName(textField.text)
-    self.title = "Add @#{@user.screen_name}"
-    @timeline_view_controller.timeline = Timeline.new(@user)
-    config_right_bar_button_item
+    User.userWithScreenName(textField.text) do |user|
+      @user = user
+      self.title = "Add @#{@user.screen_name}"
+      @timeline_view_controller.timeline = Timeline.new(@user)
+      config_right_bar_button_item
+    end
 
     return false
   end

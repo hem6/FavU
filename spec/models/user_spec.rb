@@ -9,19 +9,17 @@ describe User do
     @user = User.new(@data)
   end
 
-  describe "#initWithScreenName" do
-    before do
-      @screen_name = "uemue"
-      @user = User.alloc.initWithScreenName(@screen_name)
-    end
+  describe ".userWithScreenName" do
+    it "passes right user to callback" do
+      @fetched_user = nil
 
-    it "returns an instance with passed screen_name" do
-      @user.screen_name.should.equal @screen_name
-    end
+      User.userWithScreenName("uemue") do |user|
+        @fetched_user = user
+        resume
+      end
 
-    it "fetches other paramaters" do
-      wait 3.0 do
-        @user.id.should.not.be.nil
+      wait_max 5.0 do
+        @fetched_user.screen_name.should.equal "uemue"
       end
     end
   end
