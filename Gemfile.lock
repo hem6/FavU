@@ -53,6 +53,7 @@ GEM
       rb-inotify (>= 0.9)
     lumberjack (1.0.4)
     method_source (0.8.2)
+    motion-acknowledgements (0.0.2)
     motion-awesome (0.0.6)
       motion-map
     motion-cocoapods (1.4.2)
@@ -84,6 +85,7 @@ PLATFORMS
 
 DEPENDENCIES
   guard-motion
+  motion-acknowledgements
   motion-awesome
   motion-cocoapods
   motion-redgreen
