@@ -4,6 +4,8 @@ class Tweet
   def initialize(data)
     if data["retweeted_status"]
       fill_with_data(data["retweeted_status"])
+      @id = data["id"]
+      @reply_to = data["in_reply_to_status_id"]
       @retweeted_by = User.new(data["user"])
     else
       fill_with_data(data)
