@@ -13,7 +13,7 @@ Motion::Project::App.setup do |app|
   app.name = 'FavU'
   app.frameworks += ['Accounts', 'Social', 'Twitter']
   app.icons += ["Icon-Small@2x.png", "Icon-Small-40@2x.png", "Icon-60@2x.png"]
-
+  app.interface_orientations = [:portrait]
   app.info_plist["UIViewControllerBasedStatusBarAppearance"] = false
   app.info_plist["UIStatusBarStyle"] = "UIStatusBarStyleLightContent"
 
