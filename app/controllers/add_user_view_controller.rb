@@ -40,12 +40,13 @@ class AddUserViewController < UIViewController
       return
     end
 
-    @add_button ||= UIBarButtonItem.alloc.initWithTitle("add",
+    @add_button ||= UIBarButtonItem.alloc.initWithTitle("fav",
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'add_button_tapped')
+    @add_button.tintColor = UIColor.yellowColor
 
-    @remove_button ||= UIBarButtonItem.alloc.initWithTitle("remove",
+    @remove_button ||= UIBarButtonItem.alloc.initWithTitle("unfav",
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'remove_button_tapped')
