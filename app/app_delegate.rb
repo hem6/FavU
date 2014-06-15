@@ -14,9 +14,10 @@ class AppDelegate
   def config_navigation_bar
     UINavigationBar.appearance.barTintColor = "#1E95D4".uicolor
     UINavigationBar.appearance.titleTextAttributes = {
-      NSForegroundColorAttributeName => :white.uicolor,
+      NSForegroundColorAttributeName => UIColor.whiteColor,
       NSFontAttributeName            => UIFont.boldSystemFontOfSize(18)
     }
+    UINavigationBar.appearance.tintColor = UIColor.whiteColor
   end
 
   def applicationDidEnterBackground(application)

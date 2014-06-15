@@ -44,13 +44,11 @@ class AddUserViewController < UIViewController
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'add_button_tapped')
-    @add_button.tintColor = UIColor.yellowColor
 
     @remove_button ||= UIBarButtonItem.alloc.initWithTitle("remove",
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'remove_button_tapped')
-    @remove_button.tintColor = UIColor.whiteColor
 
     if @users_manager.indexPathForUser(@user)
       self.navigationItem.rightBarButtonItem = @remove_button
