@@ -14,6 +14,9 @@ Motion::Project::App.setup do |app|
   app.frameworks += ['Accounts', 'Social', 'Twitter']
   app.icons += ["Icon-Small@2x.png", "Icon-Small-40@2x.png", "Icon-60@2x.png"]
 
+  app.info_plist["UIViewControllerBasedStatusBarAppearance"] = false
+  app.info_plist["UIStatusBarStyle"] = "UIStatusBarStyleLightContent"
+
   # configure motion-cocoapods
   app.pods do
     pod 'STTwitter', :git => 'https://github.com/nst/STTwitter.git'

@@ -47,12 +47,13 @@ class UserTimelinesController < UIViewController
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'add_button_tapped')
+    @add_button.tintColor = UIColor.yellowColor
 
     @remove_button ||= UIBarButtonItem.alloc.initWithTitle("remove",
                                                         style:UIBarButtonItemStyleBordered,
                                                         target:self,
                                                         action:'remove_button_tapped')
-    @remove_button.tintColor = UIColor.redColor
+    @remove_button.tintColor = UIColor.whiteColor
 
     if @users_manager.indexPathForUser(@user)
       self.navigationItem.rightBarButtonItem = @remove_button
@@ -66,6 +67,7 @@ class UserTimelinesController < UIViewController
                                                            style:UIBarButtonItemStyleBordered,
                                                            target:self,
                                                            action:'accounts_button_tapped')
+    @accounts_button.tintColor = UIColor.whiteColor
     self.navigationItem.leftBarButtonItem = @accounts_button
   end
 
