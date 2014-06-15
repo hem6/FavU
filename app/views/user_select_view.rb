@@ -1,6 +1,6 @@
 class UserSelectView < UIView
   attr_accessor :collectionView
-  
+
   def initWithFrame(frame)
     return self unless super
 
@@ -16,7 +16,7 @@ class UserSelectView < UIView
       cv.registerClass(AddUserCell, forCellWithReuseIdentifier:"AddUserCell")
       cv.scrollsToTop = false
       cv.showsHorizontalScrollIndicator = false
-      cv.backgroundColor = UIColor.colorWithRed(0.950, green:0.950, blue:0.950, alpha:1.0)
+      cv.backgroundColor = "#1E95D4".uicolor
     end
     self << @collectionView
 

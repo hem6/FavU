@@ -6,16 +6,16 @@ class UserCell < UICollectionViewCell
 
     self << @name_label = UILabel.new.tap do |label|
       label.font = UIFont.systemFontOfSize(13)
-      label.textColor = UIColor.blackColor
+      label.textColor = UIColor.whiteColor
       label.lineBreakMode = NSLineBreakByTruncatingTail
       label.textAlignment = NSTextAlignmentCenter
     end
 
     self.selectedBackgroundView = UIView.new.tap do |view|
-      view.backgroundColor = UIColor.lightGrayColor
+      view.backgroundColor = "#5EC5F4".uicolor
     end
 
-    self.backgroundColor = UIColor.colorWithRed(0.950, green:0.950, blue:0.950, alpha:0.7)
+    self.backgroundColor = "#1E95D4".uicolor
 
     self
   end
