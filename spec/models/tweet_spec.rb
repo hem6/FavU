@@ -60,11 +60,11 @@ describe Tweet do
       end
 
       it "has right id" do
-        @tweet.id.should.equal @retweeted["id"]
+        @tweet.id.should.equal @data["id"]
       end
 
       it "has right reply_to" do
-        @tweet.reply_to.should.equal @retweeted["in_reply_to_status_id"]
+        @tweet.reply_to.should.equal @data["in_reply_to_status_id"]
       end
 
       it "has right text" do
