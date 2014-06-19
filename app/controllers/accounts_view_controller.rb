@@ -2,6 +2,7 @@ class AccountsViewController < UITableViewController
   def viewDidLoad
     @accounts_manager = AccountsManager.sharedManager
     self.tableView.registerClass(UITableViewCell, forCellReuseIdentifier:"Cell")
+    self.title = "Select Account"
 
     unless @accounts_manager.currentAccount
       STTwitterAPI.shared_client.verifyCredentialsWithSuccessBlock(lambda{|user_name|
