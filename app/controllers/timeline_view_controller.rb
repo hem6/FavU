@@ -1,8 +1,8 @@
-class TimelineViewController < UIViewController
+class TimelineViewController < UITableViewController
   def viewDidLoad
     super
     @last_timeline_count = 0
-    configure_views
+    configure_table_view
     configure_gesture_recognizers
   end
 
@@ -12,29 +12,34 @@ class TimelineViewController < UIViewController
     super
   end
 
-  def configure_views
-    @timeline_view = TimelineView.alloc.initWithFrame(self.view.bounds)
+  def configure_table_view
+    self.tableView.registerClass(TweetCell, forCellReuseIdentifier:"TweetCell")
+    self.tableView.allowsSelection = false
+    self.tableView.tableFooterView = UIView.new.tap do |fv|
+      fv.frame = [[0, 0], [self.view.frame.size.width, 44]]
 
-    @table_view = @timeline_view.tableView
-    @table_view.dataSource = self
-    @table_view.delegate = self
+      @indicator_view = UIActivityIndicatorView.new.tap do |iv|
+        iv.style = UIActivityIndicatorViewStyleGray
+        iv.center = [fv.center.x, fv.center.y]
+      end
 
-    @refresh_control = @timeline_view.refreshControl
+      fv << @indicator_view
+    end
+
+    @refresh_control = UIRefreshControl.new
+    self.refreshControl = @refresh_control
+
     @refresh_control.addTarget(self, action:'refresh', forControlEvents:UIControlEventValueChanged)
-
-    @indicator_view = @timeline_view.indicatorView
-
-    self.view = @timeline_view
   end
 
   def configure_gesture_recognizers
     single_tap = UITapGestureRecognizer.alloc.initWithTarget(self, action:'single_tapped:')
     single_tap.numberOfTapsRequired = 1
-    @table_view.addGestureRecognizer(single_tap)
+    self.tableView.addGestureRecognizer(single_tap)
 
     double_tap = UITapGestureRecognizer.alloc.initWithTarget(self, action:'double_tapped:')
     double_tap.numberOfTapsRequired = 2
-    @table_view.addGestureRecognizer(double_tap)
+    self.tableView.addGestureRecognizer(double_tap)
 
     single_tap.requireGestureRecognizerToFail(double_tap)
   end
@@ -43,18 +48,18 @@ class TimelineViewController < UIViewController
     # キー値監視しているtimelineを、displayOffsetを保存して入れ替える
     if @timeline
       @timeline.removeObserver(self, forKeyPath:"tweets")
-      @timeline.displayOffset = @table_view.contentOffset
+      @timeline.displayOffset = self.tableView.contentOffset
     end
 
     @timeline = timeline
     @timeline.addObserver(self, forKeyPath:"tweets", options:0, context:nil)
 
     #慣性スクロールを止める
-    @table_view.setContentOffset(@table_view.contentOffset, animated:false)
+    self.tableView.setContentOffset(self.tableView.contentOffset, animated:false)
 
     # 入れ替えられたタイムラインを表示
-    @table_view.reloadData
-    @table_view.contentOffset = @timeline.displayOffset
+    self.tableView.reloadData
+    self.tableView.contentOffset = @timeline.displayOffset
     @last_timeline_count = @timeline.count
 
     if @timeline.count == 0
@@ -79,11 +84,11 @@ class TimelineViewController < UIViewController
        @last_timeline_count != @timeline.count
 
       prepended_count = @timeline.count - @last_timeline_count
-      tableView(@table_view, reloadDataWithKeepingContentOffset:prepended_count)
+      tableView(self.tableView, reloadDataWithKeepingContentOffset:prepended_count)
       @last_timeline_count = @timeline.count
     else
       @last_timeline_count = @timeline.count
-      @table_view.reloadData
+      self.tableView.reloadData
     end
 
     @refresh_control.endRefreshing
@@ -123,8 +128,8 @@ class TimelineViewController < UIViewController
   end
 
   def indexpath_for_tapped_row(recognizer)
-    point = recognizer.locationOfTouch(0, inView:@table_view)
-    return @table_view.indexPathForRowAtPoint(point)
+    point = recognizer.locationOfTouch(0, inView:self.tableView)
+    return self.tableView.indexPathForRowAtPoint(point)
   end
 
   def open_tweet_for_indexpath(index_path)
@@ -137,7 +142,7 @@ class TimelineViewController < UIViewController
     tweet = @timeline.tweetForIndexPath(index_path)
     favorited = tweet.toggleFavorite
 
-    cell = @table_view.cellForRowAtIndexPath(index_path)
+    cell = self.tableView.cellForRowAtIndexPath(index_path)
     cell.configure_star(favorited)
   end
 
